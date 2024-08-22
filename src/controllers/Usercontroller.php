@@ -32,6 +32,9 @@ class Usercontroller
                 exit();
             }
         }
+
+        $getuserModel = new UserModel();
+        $getAllusers = $getuserModel->getAlluser();
         require 'src/views/admin/createuser.php';
     }
 }

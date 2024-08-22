@@ -25,7 +25,7 @@ class Authcontroller
                     $_SESSION['admin_id'] = $admin['id'];
                     header('Location: /iods/dashboard');
                     exit;
-                } elseif ($user && password_verify($password, $user['password'])) {
+                } elseif ($user && password_verify($password, $user['Password'])) {
                     $_SESSION['user_id'] = $user['id'];
                     header('Location: /iods/dashboard');
                     exit;
