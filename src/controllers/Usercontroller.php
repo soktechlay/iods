@@ -1,40 +1,32 @@
 <?php
 require_once 'src/models/User.php';
-
+require_once 'src/models/document/DocumentModel.php';
 class Usercontroller
 {
-    public function createuser()
+    public function alluser()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Collect form data
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-            $email = $_POST['email'];
+        try {
+            // Fetch unread notifications
+            $userId = $_SESSION['admin_id'] ?? $_SESSION['user_id'] ?? 0;          
 
-            // Hash the password
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            // Fetch all users from API
+            $UserModel = new UserModel();
 
-            $userModel = new UserModel();
+            $allUsers = $UserModel->getAllUsersFromApi($_SESSION['token'], $maxRetries = 3);
 
-            // Register the user with the hashed password
-            $registrationSuccess = $userModel->createuser($username, $hashedPassword, $email);
-
-            // Check registration result
-            if ($registrationSuccess) {
-                // Registration successful
-                $_SESSION['success'] = 'បង្កើតគណនីបានជោគជ័យ';
-                header('Location: /iods/createuser'); // Redirect to the registration page or another page
-                exit();
-            } else {
-                // Registration failed
-                $_SESSION['error'] = 'បង្កើតគណនីមិនបានជោគជ័យ';
-                header('Location: /iods/createuser'); // Redirect back to the registration page
-                exit();
+            // Check if users were successfully fetched
+            if ($allUsers === false || empty($allUsers)) {
+                throw new Exception("Failed to fetch users from the API.");
             }
-        }
 
-        $getuserModel = new UserModel();
-        $getAllusers = $getuserModel->getAlluser();
-        require 'src/views/admin/createuser.php';
+            require 'src/views/admin/alluser.php';
+
+        } catch (Exception $e) {
+            // Log the error and redirect to an error page or show an error message
+            error_log($e->getMessage());
+            $_SESSION['error'] = $e->getMessage();
+            header('Location: /error');
+            exit;
+        }
     }
 }

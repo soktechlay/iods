@@ -9,3 +9,9 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
+# .htaccess in public folder
+# <Directory "/iods/public/vendor">
+#     Order Deny,Allow
+#     Deny from all
+# </Directory>
+

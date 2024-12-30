@@ -30,16 +30,57 @@ if (session_status() === PHP_SESSION_NONE) {
     <link href="public/dist/libs/animate/animate.css?1668287865" rel="stylesheet" />
     <link href="public/dist/libs/litepicker/dist/css/plugins/multiselect.js.css?1668287865" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="public/dist/lib/datatables-checkboxes-jquery/datatables.checkboxes.css">
+    <link rel="stylesheet" href="public/dist/lib/datatables-rowgroup-bs5/rowgroup.bootstrap5.css">
+    <!-- full edit textarea css  -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+    <link rel="stylesheet" href="public/dist/lib/datatables-bs/datatables.bootstrap5.css">
+    <link rel="stylesheet" href="public/dist/lib/datatables-responsive-bs5/responsive.bootstrap5.css">
+    <!-- flatpickr  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
         .sortable:hover {
             cursor: pointer;
             text-decoration: underline;
         }
     </style>
+
 </head>
 
 <body>
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
     <script src="public/dist/js/demo-theme.min.js?1668287865"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.1/js/bootstrap.min.js"></script>
+    <!-- DataTables JavaScript -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            flatpickr("#flatpickr-range", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "F j, Y",
+            });
+        });
+    </script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> -->
+
+    <!-- Bootstrap Toast (Success/Error) -->
+
+
     <div class="page">
         <!-- Navbar -->
         <div class="sticky-top">
@@ -66,3 +107,38 @@ if (session_status() === PHP_SESSION_NONE) {
             <!-- Page body -->
             <div class="page-body">
                 <div class="container-xl">
+                    <?php if (isset($_SESSION['success'])): ?>
+                        <div class="alert alert-success">
+                            <?php
+                            // Check if it's an array and handle accordingly
+                            if (is_array($_SESSION['success'])) {
+                                // Loop through the array and print each message
+                                foreach ($_SESSION['success'] as $message) {
+                                    echo htmlspecialchars($message) . "<br>";
+                                }
+                            } else {
+                                // Print the message directly if it's not an array
+                                echo htmlspecialchars($_SESSION['success']);
+                            }
+                            unset($_SESSION['success']);
+                            ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($_SESSION['error'])): ?>
+                        <div class="alert alert-danger">
+                            <?php
+                            // Check if it's an array and handle accordingly
+                            if (is_array($_SESSION['error'])) {
+                                // Loop through the array and print each message
+                                foreach ($_SESSION['error'] as $message) {
+                                    echo htmlspecialchars($message) . "<br>";
+                                }
+                            } else {
+                                // Print the message directly if it's not an array
+                                echo htmlspecialchars($_SESSION['error']);
+                            }
+                            unset($_SESSION['error']);
+                            ?>
+                        </div>
+                    <?php endif; ?>
